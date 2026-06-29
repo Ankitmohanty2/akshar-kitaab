@@ -1,0 +1,229 @@
+.featuresSection {
+  padding: 120px 0 100px;
+  background-color: var(--bg-light);
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  text-align: center;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  line-height: 1.15;
+  font-weight: 500;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+/* Controls Bar */
+.controlsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  gap: 24px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 24px;
+}
+
+.tabsList {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  padding: 10px 20px;
+  border-radius: 40px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.tabBtn:hover {
+  color: var(--text-dark);
+  background-color: var(--bg-white);
+}
+
+.activeTab {
+  background-color: var(--text-dark);
+  color: var(--bg-white) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 40px;
+  padding: 6px 18px;
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.searchWrapper:focus-within {
+  border-color: var(--text-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.searchIcon {
+  color: var(--text-light);
+  margin-right: 10px;
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.85rem;
+  width: 100%;
+  color: var(--text-dark);
+}
+
+.searchInput::placeholder {
+  color: var(--text-light);
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--bg-white);
+  padding: 32px 28px;
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+
+.cardHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.iconCircle {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* Dynamic category colors */
+.convert .iconCircle {
+  background-color: #ebf3ff;
+  color: #2b7af0;
+}
+.edit .iconCircle {
+  background-color: #fff6eb;
+  color: #f08c2b;
+}
+.security .iconCircle {
+  background-color: #ebfbf3;
+  color: #2bf08c;
+}
+.other .iconCircle {
+  background-color: #fbf5ff;
+  color: #b72bf0;
+}
+
+.card:hover .iconCircle {
+  transform: scale(1.08);
+}
+
+.arrow {
+  font-size: 1.2rem;
+  color: var(--text-light);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--text-dark);
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+  letter-spacing: -0.2px;
+  color: var(--text-dark);
+}
+
+.description {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.noResults {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--text-muted);
+}
+
+.noResults h3 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  .controlsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchWrapper {
+    width: 100%;
+  }
+}
