@@ -296,7 +296,7 @@ export default function ToolPage() {
         <div className={styles.container}>
           
           <Link href="/tools" className={styles.backLink}>
-            &larr; Back to Tools
+            Back to Tools
           </Link>
 
           <div className={styles.toolHeader}>
