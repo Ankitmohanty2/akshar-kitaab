@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
     // Save using Next-gen object streams and compression settings
     const pdfBytes = await compressedDoc.save({
       useObjectStreams: true,
-      addGlyphsToSansSerifFont: false,
     });
 
     const finalOutputName = outputName.toLowerCase().endsWith(".pdf") 

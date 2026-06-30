@@ -213,12 +213,13 @@ export async function POST(req: NextRequest) {
     });
 
     const pptxBytes = await zip.generateAsync({ type: "nodebuffer" });
+    const pptxBytesArray = new Uint8Array(pptxBytes);
 
     const finalOutputName = outputName.toLowerCase().endsWith(".pptx") 
       ? outputName 
       : `${outputName}.pptx`;
 
-    return new NextResponse(pptxBytes, {
+    return new NextResponse(pptxBytesArray, {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",

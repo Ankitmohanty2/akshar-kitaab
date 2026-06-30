@@ -62,12 +62,13 @@ export async function POST(req: NextRequest) {
     }
 
     const zipBytes = await zip.generateAsync({ type: "nodebuffer" });
+    const zipBytesArray = new Uint8Array(zipBytes);
 
     const finalOutputName = outputName.toLowerCase().endsWith(".zip") 
       ? outputName 
       : `${outputName}.zip`;
 
-    return new NextResponse(zipBytes, {
+    return new NextResponse(zipBytesArray, {
       status: 200,
       headers: {
         "Content-Type": "application/zip",

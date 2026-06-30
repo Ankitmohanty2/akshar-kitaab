@@ -106,12 +106,13 @@ export async function POST(req: NextRequest) {
     zip.file("word/document.xml", documentXml);
 
     const docxBytes = await zip.generateAsync({ type: "nodebuffer" });
+    const docxBytesArray = new Uint8Array(docxBytes);
 
     const finalOutputName = outputName.toLowerCase().endsWith(".docx") 
       ? outputName 
       : `${outputName}.docx`;
 
-    return new NextResponse(docxBytes, {
+    return new NextResponse(docxBytesArray, {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
