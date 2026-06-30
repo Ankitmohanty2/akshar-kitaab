@@ -24,6 +24,9 @@ const toolConfig: Record<string, {
   needsPagePreview?: boolean;
   pagesLabel?: string;
   pagesPlaceholder?: string;
+  needsPrompt?: boolean;
+  needsTextOverlay?: boolean;
+  needsSignature?: boolean;
 }> = {
   "merge-pdf": {
     title: "Merge PDF",
@@ -102,6 +105,79 @@ const toolConfig: Record<string, {
     allowMultiple: false,
     defaultOutput: "cropped.pdf",
   },
+  "extract-images": {
+    title: "Extract PDF Images",
+    description: "Extract all images embedded in your PDF document as a ZIP file.",
+    acceptType: ".pdf",
+    allowMultiple: false,
+    defaultOutput: "extracted_images.zip",
+  },
+  "word-to-pdf": {
+    title: "Word to PDF",
+    description: "Convert Microsoft Word documents (.docx) to PDF format.",
+    acceptType: ".docx",
+    allowMultiple: false,
+    defaultOutput: "converted.pdf",
+  },
+  "pdf-to-word": {
+    title: "PDF to Word",
+    description: "Convert PDF files to editable Word documents (.docx).",
+    acceptType: ".pdf",
+    allowMultiple: false,
+    defaultOutput: "converted.docx",
+  },
+  "compress-pdf": {
+    title: "Compress PDF",
+    description: "Reduce the file size of your PDF while maintaining optimal quality.",
+    acceptType: ".pdf",
+    allowMultiple: false,
+    defaultOutput: "compressed.pdf",
+  },
+  "ocr-image": {
+    title: "OCR Image",
+    description: "Extract readable and searchable text from an image (PNG, JPG).",
+    acceptType: "image/jpeg, image/png, image/jpg",
+    allowMultiple: false,
+    defaultOutput: "extracted_text.txt",
+  },
+  "edit-pdf": {
+    title: "Edit PDF",
+    description: "Insert a custom text overlay on the pages of your PDF.",
+    acceptType: ".pdf",
+    allowMultiple: false,
+    defaultOutput: "edited.pdf",
+    needsTextOverlay: true,
+  },
+  "ppt-to-pdf": {
+    title: "PowerPoint to PDF",
+    description: "Convert PowerPoint presentations (.pptx) to PDF format.",
+    acceptType: ".pptx",
+    allowMultiple: false,
+    defaultOutput: "converted.pdf",
+  },
+  "generate-pdf": {
+    title: "Generate PDF",
+    description: "Instantly draft a clean PDF document from a text prompt or topic.",
+    acceptType: "",
+    allowMultiple: false,
+    defaultOutput: "generated.pdf",
+    needsPrompt: true,
+  },
+  "sign-pdf": {
+    title: "Sign PDF",
+    description: "Draw your signature and place it securely on your PDF file.",
+    acceptType: ".pdf",
+    allowMultiple: false,
+    defaultOutput: "signed.pdf",
+    needsSignature: true,
+  },
+  "pdf-to-ppt": {
+    title: "PDF to PPT",
+    description: "Convert PDF pages back to editable PowerPoint slides (.pptx).",
+    acceptType: ".pdf",
+    allowMultiple: false,
+    defaultOutput: "converted.pptx",
+  },
 };
 
 export default function ToolPage() {
@@ -121,6 +197,70 @@ export default function ToolPage() {
   // For page preview (delete-pages)
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
   const [totalPageCount, setTotalPageCount] = useState(0);
+
+  // For premium tools
+  const [promptText, setPromptText] = useState("");
+  const [textOverlay, setTextOverlay] = useState("");
+  const [signatureImage, setSignatureImage] = useState("");
+  const [sigX, setSigX] = useState("100");
+  const [sigY, setSigY] = useState("100");
+  const [sigPage, setSigPage] = useState("1");
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = ('touches' in e) ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+    const y = ('touches' in e) ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+    
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    setIsDrawing(true);
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = ('touches' in e) ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
+    const y = ('touches' in e) ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+    
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      setSignatureImage(canvas.toDataURL("image/png"));
+    }
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      setSignatureImage("");
+    }
+  };
 
   const config = toolConfig[id];
   const isSupported = !!config;
@@ -193,7 +333,7 @@ export default function ToolPage() {
     setError("");
     setAnalysisData(null);
 
-    if (files.length === 0) {
+    if (id !== "generate-pdf" && files.length === 0) {
       setError("Please select at least one file.");
       return;
     }
@@ -214,6 +354,21 @@ export default function ToolPage() {
       return;
     }
 
+    if (config?.needsSignature && !signatureImage) {
+      setError("Please draw your signature in the pad below.");
+      return;
+    }
+
+    if (config?.needsPrompt && !promptText.trim()) {
+      setError("Please enter a prompt or draft topic.");
+      return;
+    }
+
+    if (config?.needsTextOverlay && !textOverlay.trim()) {
+      setError("Please enter the overlay text.");
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
@@ -230,6 +385,14 @@ export default function ToolPage() {
         formData.append("pages", pages);
       }
 
+      // Premium parameters
+      if (promptText) formData.append("prompt", promptText);
+      if (textOverlay) formData.append("text_overlay", textOverlay);
+      if (signatureImage) formData.append("signature_image", signatureImage);
+      if (sigX) formData.append("sig_x", sigX);
+      if (sigY) formData.append("sig_y", sigY);
+      if (sigPage) formData.append("sig_page", sigPage);
+
       const endpointMap: Record<string, string> = {
         "merge-pdf": "/api/pdf/merge",
         "image-to-pdf": "/api/pdf/image-to-pdf",
@@ -241,6 +404,16 @@ export default function ToolPage() {
         "analyse-pdf": "/api/pdf/analyse",
         "compress-image": "/api/pdf/compress-image",
         "crop-pdf": "/api/pdf/crop",
+        "extract-images": "/api/pdf/extract-images",
+        "word-to-pdf": "/api/pdf/word-to-pdf",
+        "pdf-to-word": "/api/pdf/pdf-to-word",
+        "compress-pdf": "/api/pdf/compress-pdf",
+        "ocr-image": "/api/pdf/ocr-image",
+        "edit-pdf": "/api/pdf/edit-pdf",
+        "ppt-to-pdf": "/api/pdf/ppt-to-pdf",
+        "generate-pdf": "/api/pdf/generate-pdf",
+        "sign-pdf": "/api/pdf/sign-pdf",
+        "pdf-to-ppt": "/api/pdf/pdf-to-ppt",
       };
 
       const endpoint = endpointMap[id];
@@ -322,23 +495,25 @@ export default function ToolPage() {
             <form onSubmit={handleSubmit} className={styles.toolForm}>
               
               {/* File Upload Zone */}
-              <div 
-                className={styles.dropZone}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <svg className={styles.uploadIcon} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                <p className={styles.dropText}>Click to browse or drag and drop files here</p>
-                <input 
-                  type="file" 
-                  ref={fileInputRef} 
-                  onChange={handleFileChange} 
-                  className={styles.fileInput}
-                  multiple={config?.allowMultiple}
-                  accept={config?.acceptType}
-                />
-              </div>
+              {!config?.needsPrompt && (
+                <div 
+                  className={styles.dropZone}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <svg className={styles.uploadIcon} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  <p className={styles.dropText}>Click to browse or drag and drop files here</p>
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleFileChange} 
+                    className={styles.fileInput}
+                    multiple={config?.allowMultiple}
+                    accept={config?.acceptType}
+                  />
+                </div>
+              )}
 
               {/* File List */}
               {files.length > 0 && !config?.needsPagePreview && (
@@ -410,6 +585,94 @@ export default function ToolPage() {
                     <option value="180">180°</option>
                     <option value="270">270° Clockwise (90° Counter-Clockwise)</option>
                   </select>
+                </div>
+              )}
+
+              {/* Text Prompt input for generate-pdf */}
+              {config?.needsPrompt && (
+                <div className={styles.inputGroup}>
+                  <label>Document Prompt / Draft Content</label>
+                  <textarea 
+                    value={promptText} 
+                    onChange={(e) => setPromptText(e.target.value)} 
+                    placeholder="Enter the draft topic or text content for your PDF..."
+                    className={styles.textInput}
+                    style={{ minHeight: "100px", resize: "vertical" }}
+                    required
+                  />
+                </div>
+              )}
+
+              {/* Text Overlay input for edit-pdf */}
+              {config?.needsTextOverlay && (
+                <div className={styles.inputGroup}>
+                  <label>Overlay Text</label>
+                  <input 
+                    type="text" 
+                    value={textOverlay} 
+                    onChange={(e) => setTextOverlay(e.target.value)} 
+                    placeholder="Enter text to overlay on top of pages"
+                    className={styles.textInput}
+                    required
+                  />
+                </div>
+              )}
+
+              {/* Signature pad input for sign-pdf */}
+              {config?.needsSignature && (
+                <div className={styles.inputGroup}>
+                  <label>Draw Signature</label>
+                  <div style={{ border: "1px solid var(--border-light)", borderRadius: "var(--radius-sm)", backgroundColor: "white", padding: "10px", display: "inline-block", width: "100%", maxWidth: "420px" }}>
+                    <canvas
+                      ref={canvasRef}
+                      width={400}
+                      height={150}
+                      style={{ border: "1px dashed var(--border-hover)", display: "block", cursor: "crosshair", backgroundColor: "#faf8f4", width: "100%", height: "150px" }}
+                      onMouseDown={startDrawing}
+                      onMouseMove={draw}
+                      onMouseUp={stopDrawing}
+                      onMouseLeave={stopDrawing}
+                      onTouchStart={startDrawing}
+                      onTouchMove={draw}
+                      onTouchEnd={stopDrawing}
+                    />
+                    <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+                      <button type="button" onClick={clearCanvas} className={styles.removeFileBtn}>Clear Pad</button>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
+                    <div style={{ flex: 1 }}>
+                      <label>Page Number</label>
+                      <input 
+                        type="number" 
+                        min="1"
+                        value={sigPage} 
+                        onChange={(e) => setSigPage(e.target.value)} 
+                        className={styles.textInput}
+                        required
+                      />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <label>X (px)</label>
+                      <input 
+                        type="number" 
+                        value={sigX} 
+                        onChange={(e) => setSigX(e.target.value)} 
+                        className={styles.textInput}
+                        required
+                      />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <label>Y (px)</label>
+                      <input 
+                        type="number" 
+                        value={sigY} 
+                        onChange={(e) => setSigY(e.target.value)} 
+                        className={styles.textInput}
+                        required
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
 
