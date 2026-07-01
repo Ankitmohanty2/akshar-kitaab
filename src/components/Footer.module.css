@@ -1,8 +1,23 @@
 .footer {
   border-top: 1px solid var(--border-light);
-  padding: 80px 0 40px;
-  background-color: var(--bg-white);
+  padding: 100px 0 45px;
+  background-color: var(--bg-light); /* Matches website warm cream color */
   color: var(--text-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background soft decorative gradient glow */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -200px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.15) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
 }
 
 .container {
@@ -12,14 +27,21 @@
   padding: 0 40px;
 }
 
-/* CTA Section */
+/* Premium Card CTA Section */
 .ctaSection {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 50px 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 60px;
+  margin-bottom: 70px;
   flex-wrap: wrap;
   gap: 30px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 2;
 }
 
 .ctaText {
@@ -28,55 +50,60 @@
 
 .ctaTitle {
   font-family: var(--font-serif);
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   margin-bottom: 12px;
   line-height: 1.2;
   font-weight: 500;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
 }
 
 .ctaSubtitle {
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 .ctaButton {
-  background-color: var(--text-dark);
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #e8c896 100%);
   color: var(--bg-white);
-  padding: 16px 32px;
-  font-size: 0.8rem;
+  padding: 18px 36px;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 600;
+  letter-spacing: 2px;
+  font-weight: 700;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--text-dark);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 15px rgba(201, 169, 110, 0.15);
 }
 
 .ctaButton:hover {
-  background-color: transparent;
-  color: var(--text-dark);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(201, 169, 110, 0.3);
+  background: linear-gradient(135deg, #e8c896 0%, var(--accent-gold) 100%);
 }
 
 .ctaArrow {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .ctaButton:hover .ctaArrow {
-  transform: translateX(4px);
+  transform: translateX(6px);
 }
 
 .divider {
   border: 0;
   border-top: 1px solid var(--border-light);
-  margin-bottom: 60px;
+  margin-bottom: 70px;
 }
 
 .dividerSub {
   border: 0;
   border-top: 1px solid var(--border-light);
-  margin: 60px 0 30px;
+  margin: 70px 0 35px;
 }
 
 /* Grid Layout */
@@ -93,7 +120,7 @@
 }
 
 .logo {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
 }
@@ -101,23 +128,25 @@
 .logoSerif {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin-right: 6px;
   font-weight: 500;
+  color: var(--text-dark);
 }
 
 .logoSans {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  letter-spacing: 3px;
-  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 4px;
+  font-weight: 700;
+  color: var(--accent-gold);
 }
 
 .brandDesc {
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.7;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   max-width: 320px;
 }
 
@@ -130,19 +159,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border-light);
   color: var(--text-muted);
-  transition: all 0.25s ease;
+  background-color: var(--bg-white);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .socialLink:hover {
   border-color: var(--text-dark);
-  color: var(--text-dark);
-  background-color: var(--bg-light);
-  transform: translateY(-2px);
+  color: var(--bg-white);
+  background-color: var(--text-dark);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Links Columns */
@@ -153,12 +184,12 @@
 }
 
 .colTitle {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   color: var(--text-dark);
-  margin-bottom: 24px;
-  font-weight: 600;
+  margin-bottom: 28px;
+  font-weight: 700;
 }
 
 .list {
@@ -167,19 +198,38 @@
 }
 
 .list li {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .link {
   color: var(--text-muted);
-  font-size: 0.9rem;
-  transition: color 0.2s ease, padding-left 0.2s ease;
+  font-size: 0.92rem;
+  transition: color 0.3s ease;
   display: inline-block;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1.5px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent-gold);
+  transform-origin: bottom right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .link:hover {
   color: var(--text-dark);
-  padding-left: 4px;
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 /* Bottom Bar */
@@ -187,8 +237,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--text-light);
-  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
   flex-wrap: wrap;
   gap: 16px;
 }
@@ -200,6 +250,21 @@
 .bottomLinks {
   letter-spacing: 0.5px;
   font-weight: 500;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.securityBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  background: var(--bg-cream);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  font-size: 0.75rem;
 }
 
 @media (max-width: 992px) {
@@ -219,10 +284,14 @@
   .ctaSection {
     flex-direction: column;
     align-items: flex-start;
+    padding: 40px 30px;
   }
   .linksGrid {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
+  }
+  .ctaTitle {
+    font-size: 2.1rem;
   }
 }
 

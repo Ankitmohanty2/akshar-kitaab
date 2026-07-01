@@ -62,10 +62,12 @@ export default function Footer() {
             <div className={styles.column}>
               <h4 className={styles.colTitle}>Solutions</h4>
               <ul className={styles.list}>
-                <li><Link href="/tools/merge-pdf" className={styles.link}>Merge Documents</Link></li>
-                <li><Link href="/tools/split-pdf" className={styles.link}>Split & Extract</Link></li>
-                <li><Link href="/tools/delete-pages" className={styles.link}>Delete Pages</Link></li>
-                <li><Link href="/tools/compress-image" className={styles.link}>Optimize Images</Link></li>
+                <li><Link href="/tools/merge-pdf" className={styles.link}>Merge & Split PDF</Link></li>
+                <li><Link href="/tools/delete-pages" className={styles.link}>Delete PDF Pages</Link></li>
+                <li><Link href="/tools/edit-pdf" className={styles.link}>Edit & Sign PDF</Link></li>
+                <li><Link href="/tools/ocr-image" className={styles.link}>OCR Image to Text</Link></li>
+                <li><Link href="/tools/word-to-pdf" className={styles.link}>Word / PPT to PDF</Link></li>
+                <li><Link href="/tools/pdf-to-word" className={styles.link}>PDF to Word / PPT</Link></li>
               </ul>
             </div>
             <div className={styles.column}>
@@ -96,7 +98,13 @@ export default function Footer() {
             &copy; {currentYear} Akshar KITAAB. Handcrafted with care. All rights reserved.
           </p>
           <div className={styles.bottomLinks}>
-            <span>Secure Cloud Engine v1.2</span>
+            <span className={styles.securityBadge}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Secure Cloud Engine v2.0
+            </span>
           </div>
         </div>
 
