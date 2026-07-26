@@ -192,7 +192,7 @@ export default function ToolPage() {
   const [rotation, setRotation] = useState("90");
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState("");
-  const [analysisData, setAnalysisData] = useState<any>(null);
+  const [analysisData, setAnalysisData] = useState<Record<string, unknown> | null>(null);
 
   // For page preview (delete-pages)
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
@@ -265,15 +265,37 @@ export default function ToolPage() {
   const config = toolConfig[id];
   const isSupported = !!config;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setFiles((prev) => [...prev, ...newFiles]);
-      // Reset page selection when new file is added
-      if (config?.needsPagePreview) {
-        setSelectedPages(new Set());
-      }
+  const acceptsFile = (file: File) => {
+    if (!config?.acceptType) return true;
+    return config.acceptType.split(",").some((rawType) => {
+      const type = rawType.trim().toLowerCase();
+      if (type.startsWith(".")) return file.name.toLowerCase().endsWith(type);
+      if (type.endsWith("/*")) return file.type.toLowerCase().startsWith(type.slice(0, -1));
+      return file.type.toLowerCase() === type;
+    });
+  };
+
+  const addFiles = (newFiles: File[]) => {
+    const acceptedFiles = newFiles.filter(acceptsFile);
+    if (acceptedFiles.length !== newFiles.length) {
+      setError(`Please select only supported files (${config?.acceptType}).`);
+    } else {
+      setError("");
     }
+
+    if (acceptedFiles.length === 0) return;
+    setFiles((previousFiles) =>
+      config?.allowMultiple ? [...previousFiles, ...acceptedFiles] : [acceptedFiles[0]],
+    );
+    if (config?.needsPagePreview) {
+      setSelectedPages(new Set());
+      setTotalPageCount(0);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) addFiles(Array.from(e.target.files));
+    e.target.value = "";
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -283,11 +305,7 @@ export default function ToolPage() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     if (e.dataTransfer.files) {
-      const newFiles = Array.from(e.dataTransfer.files);
-      setFiles((prev) => [...prev, ...newFiles]);
-      if (config?.needsPagePreview) {
-        setSelectedPages(new Set());
-      }
+      addFiles(Array.from(e.dataTransfer.files));
     }
   };
 
@@ -429,8 +447,16 @@ export default function ToolPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to process files");
+        const contentType = response.headers.get("content-type") || "";
+        let message = `Failed to process files (${response.status})`;
+        if (contentType.includes("application/json")) {
+          const errorData = (await response.json()) as { error?: string };
+          message = errorData.error || message;
+        } else {
+          const responseText = await response.text();
+          if (responseText && responseText.length < 500) message = responseText;
+        }
+        throw new Error(message);
       }
 
       if (id === "analyse-pdf") {
@@ -444,14 +470,21 @@ export default function ToolPage() {
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.download = outputName || config?.defaultOutput || "output.pdf";
+      const disposition = response.headers.get("content-disposition") || "";
+      const encodedName = disposition.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
+      const quotedName = disposition.match(/filename="([^"]+)"/i)?.[1];
+      link.download =
+        (encodedName ? decodeURIComponent(encodedName) : quotedName) ||
+        outputName ||
+        config?.defaultOutput ||
+        "output.pdf";
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(downloadUrl);
 
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
     } finally {
       setIsProcessing(false);
     }

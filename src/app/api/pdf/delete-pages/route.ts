@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const files = formData.getAll("files") as File[];
     const pagesStr = formData.get("pages") as string | null;
+    const outputName = (formData.get("output_name") as string) || "pages_deleted.pdf";
 
     if (!files || files.length === 0) {
       return NextResponse.json({ error: "No PDF uploaded" }, { status: 400 });
@@ -65,16 +66,22 @@ export async function POST(req: NextRequest) {
     }
 
     const pdfBytes = await pdfDoc.save();
+    const finalOutputName = outputName.toLowerCase().endsWith(".pdf")
+      ? outputName
+      : `${outputName}.pdf`;
 
     return new NextResponse(Buffer.from(pdfBytes), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="pages_deleted.pdf"`,
+        "Content-Disposition": `attachment; filename="${finalOutputName}"`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Delete Pages Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to delete pages" }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to delete pages" },
+      { status: 500 },
+    );
   }
 }

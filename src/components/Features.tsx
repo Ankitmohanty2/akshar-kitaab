@@ -33,7 +33,7 @@ export default function Features() {
     {
       id: 'image-to-pdf',
       title: 'Image to PDF',
-      desc: 'Convert JPG, PNG or GIF to PDF.',
+      desc: 'Convert JPG and PNG images to PDF.',
       category: 'convert',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,7 +46,7 @@ export default function Features() {
     {
       id: 'word-to-pdf',
       title: 'Word to PDF',
-      desc: 'Make DOC and DOCX files easy to read by converting to PDF.',
+      desc: 'Convert DOCX document text into a readable PDF.',
       category: 'convert',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
