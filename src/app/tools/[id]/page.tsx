@@ -114,8 +114,8 @@ const toolConfig: Record<string, {
   },
   "word-to-pdf": {
     title: "Word to PDF",
-    description: "Convert Microsoft Word documents (.docx) to PDF format.",
-    acceptType: ".docx",
+    description: "Convert Microsoft Word documents (.doc and .docx) to PDF with their original layout.",
+    acceptType: ".doc,.docx",
     allowMultiple: false,
     defaultOutput: "converted.pdf",
   },

@@ -20,7 +20,7 @@
 - **Compress PDFs** - Reduce file size without losing quality
 
 ### 🔐 Security & Privacy
-- ✅ **100% Local Processing** - All conversions happen in your browser, no uploads to servers
+- ✅ **Self-hosted Processing** - Documents are processed by your own application server
 - ✅ **No Trackers** - Complete privacy, your documents stay with you
 - ✅ **No Ads** - Clean, distraction-free experience
 - ✅ **Open Source** - Transparent, auditable code
@@ -28,8 +28,8 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Node.js** 18.17+ or later
-- **npm** or **yarn** or **pnpm** or **bun**
+- **Docker** (recommended; includes LibreOffice for accurate Word-to-PDF conversion)
+- Or **Node.js 20+**, npm, and a local LibreOffice installation
 
 ### Installation
 
@@ -37,3 +37,19 @@
 ```bash
 git clone https://github.com/Ankitmohanty2/akshar-kitaab.git
 cd akshar-kitaab
+```
+
+2. **Build and run with Docker**
+```bash
+docker build -t akshar-kitaab .
+docker run --rm -p 3000:3000 akshar-kitaab
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+For development outside Docker, install LibreOffice and ensure `soffice` is on `PATH`, or set `LIBREOFFICE_PATH` to the executable:
+
+```bash
+npm install
+npm run dev
+```
