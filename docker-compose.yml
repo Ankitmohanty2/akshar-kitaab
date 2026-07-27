@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    image: akshar-kitaab:latest
+    container_name: akshar-kitaab
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      LIBREOFFICE_PATH: /usr/bin/soffice
+      HOME: /tmp
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s

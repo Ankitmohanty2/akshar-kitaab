@@ -33,9 +33,6 @@ export default function Header() {
           <Link href="/#categories" className={pathname === "/#categories" ? styles.active : ""}>
             Collections
           </Link>
-          <Link href="/pricing" className={pathname === "/pricing" ? styles.active : ""}>
-            Pricing
-          </Link>
         </nav>
       </div>
     </header>

@@ -9,7 +9,7 @@ export default function Home() {
       <section className={styles.hero}>
         <div className={styles.heroText}>
           <h1 className={styles.heroTitle}>Effortless Documents.<br/>Made for You.</h1>
-          <p className={styles.heroSubtitle}>Premium PDF tools handcrafted with privacy in mind and meticulously designed to save you time.</p>
+          <p className={styles.heroSubtitle}>PDF tools handcrafted with privacy in mind and meticulously designed to save you time.</p>
           <Link href="/tools/merge-pdf" className={styles.btn}>Explore Tools</Link>
         </div>
         <div className={styles.heroImageContainer}>
@@ -128,7 +128,7 @@ export default function Home() {
             </div>
             <div style={{ padding: '0 20px 30px' }}>
               <h3 className={styles.categoryTitle}>Merge PDF</h3>
-              <span className={styles.categoryLink}>Free</span>
+              <span className={styles.categoryLink}>Open tool</span>
             </div>
           </Link>
           <Link href="/tools/split-pdf" className={styles.toolCard}>
@@ -137,7 +137,7 @@ export default function Home() {
             </div>
             <div style={{ padding: '0 20px 30px' }}>
               <h3 className={styles.categoryTitle}>Split PDF</h3>
-              <span className={styles.categoryLink}>Free</span>
+              <span className={styles.categoryLink}>Open tool</span>
             </div>
           </Link>
           <Link href="/tools/compress-pdf" className={styles.toolCard}>
@@ -146,7 +146,7 @@ export default function Home() {
             </div>
             <div style={{ padding: '0 20px 30px' }}>
               <h3 className={styles.categoryTitle}>Compress PDF</h3>
-              <span className={styles.categoryLink}>Free</span>
+              <span className={styles.categoryLink}>Open tool</span>
             </div>
           </Link>
           <Link href="/tools/pdf-to-word" className={styles.toolCard}>
@@ -155,7 +155,7 @@ export default function Home() {
             </div>
             <div style={{ padding: '0 20px 30px' }}>
               <h3 className={styles.categoryTitle}>PDF to Word</h3>
-              <span className={styles.categoryLink}>Free</span>
+              <span className={styles.categoryLink}>Open tool</span>
             </div>
           </Link>
         </div>
@@ -169,17 +169,17 @@ export default function Home() {
         <div className={styles.reviewsGrid}>
           <div className={styles.reviewCard}>
             <div className={styles.stars}>★★★★★</div>
-            <p className={styles.reviewText}>"The most beautiful and seamless PDF tool I have ever used. It perfectly handles all my legal documents in seconds without any privacy concerns."</p>
+            <p className={styles.reviewText}>&quot;The most beautiful and seamless PDF tool I have ever used. It perfectly handles all my legal documents in seconds without any privacy concerns.&quot;</p>
             <p className={styles.reviewerName}>Sarah Jenkins, Attorney</p>
           </div>
           <div className={styles.reviewCard}>
             <div className={styles.stars}>★★★★★</div>
-            <p className={styles.reviewText}>"I compress and merge huge pitch decks every day. Akshar Kitaab handles large files elegantly and never crashes. Truly a premium experience."</p>
+            <p className={styles.reviewText}>&quot;I compress and merge huge pitch decks every day. Akshar Kitaab handles large files elegantly and never crashes. A smooth, reliable experience.&quot;</p>
             <p className={styles.reviewerName}>David Chen, Marketing Director</p>
           </div>
           <div className={styles.reviewCard}>
             <div className={styles.stars}>★★★★★</div>
-            <p className={styles.reviewText}>"I love that it's just drag, drop, and done. No annoying ads or popups like the other sites. It's perfectly designed for speed and simplicity."</p>
+            <p className={styles.reviewText}>&quot;I love that it&apos;s just drag, drop, and done. No annoying ads or popups like the other sites. It&apos;s perfectly designed for speed and simplicity.&quot;</p>
             <p className={styles.reviewerName}>Emily R., Graphic Designer</p>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function Home() {
         <div className={styles.faqGrid}>
           <div className={styles.faqItem}>
             <h3 className={styles.faqQuestion}>Is Akshar Kitaab really free to use?</h3>
-            <p className={styles.faqAnswer}>Yes, all of our core PDF tools are 100% free for individual users. We offer a premium subscription if you require higher file size limits or batch processing.</p>
+            <p className={styles.faqAnswer}>Yes. Every tool on Akshar Kitaab is free to use with no paid plans, subscriptions, or upgrade walls.</p>
           </div>
           <div className={styles.faqItem}>
             <h3 className={styles.faqQuestion}>Are my documents secure?</h3>

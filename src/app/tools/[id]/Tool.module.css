@@ -263,8 +263,8 @@
   box-shadow: none;
 }
 
-/* Frosted glass premium lock */
-.premiumLock {
+/* Unsupported tool state */
+.unavailableTool {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -275,19 +275,19 @@
   box-shadow: var(--shadow-lg);
 }
 
-.premiumIcon {
+.unavailableIcon {
   color: var(--accent-gold);
   margin-bottom: 24px;
 }
 
-.premiumLock h2 {
+.unavailableTool h2 {
   font-family: var(--font-serif);
   font-size: 2.2rem;
   margin-bottom: 12px;
   font-weight: 500;
 }
 
-.premiumLock p {
+.unavailableTool p {
   color: var(--text-muted);
   margin-bottom: 32px;
   max-width: 460px;
@@ -296,7 +296,8 @@
   line-height: 1.6;
 }
 
-.upgradeBtn {
+.backToToolsBtn {
+  display: inline-block;
   background-color: var(--text-dark);
   color: white;
   border: none;
@@ -305,13 +306,13 @@
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-weight: 600;
-  cursor: pointer;
+  text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: var(--radius-sm);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.upgradeBtn:hover {
+.backToToolsBtn:hover {
   background-color: #333;
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);

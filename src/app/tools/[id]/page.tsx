@@ -198,7 +198,7 @@ export default function ToolPage() {
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
   const [totalPageCount, setTotalPageCount] = useState(0);
 
-  // For premium tools
+  // Extra tool options
   const [promptText, setPromptText] = useState("");
   const [textOverlay, setTextOverlay] = useState("");
   const [signatureImage, setSignatureImage] = useState("");
@@ -403,7 +403,6 @@ export default function ToolPage() {
         formData.append("pages", pages);
       }
 
-      // Premium parameters
       if (promptText) formData.append("prompt", promptText);
       if (textOverlay) formData.append("text_overlay", textOverlay);
       if (signatureImage) formData.append("signature_image", signatureImage);
@@ -515,14 +514,15 @@ export default function ToolPage() {
           </div>
 
           {!isSupported ? (
-            <div className={styles.premiumLock}>
-              <svg className={styles.premiumIcon} xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            <div className={styles.unavailableTool}>
+              <svg className={styles.unavailableIcon} xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
               </svg>
-              <h2>Pro Feature Locked</h2>
-              <p>This advanced document processing feature requires the Akshar KITAAB Pro engine.</p>
-              <button className={styles.upgradeBtn}>Upgrade to Pro</button>
+              <h2>Tool not available</h2>
+              <p>This tool is not available yet. Browse the tools page for everything currently supported.</p>
+              <Link href="/tools" className={styles.backToToolsBtn}>Browse tools</Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className={styles.toolForm}>

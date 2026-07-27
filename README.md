@@ -1,55 +1,71 @@
-# 📚 Akshar Kitaab
+# Akshar Kitaab
 
-> **Perfect your PDFs effortlessly.** A beautiful, fast, and privacy-first PDF toolkit for converting, editing, and managing your documents.
+> Perfect your PDFs effortlessly. A fast, privacy-first PDF toolkit for converting, editing, and managing documents.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-akshar--kitaab.vercel.app-blue?style=flat-square)](https://akshar-kitaab.vercel.app)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Ankitmohanty2/akshar--kitaab-blue?style=flat-square)](https://github.com/Ankitmohanty2/akshar-kitaab)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-## ✨ Features
+## Features
 
-### 🔄 Convert
-- **Image to PDF** - Convert JPG, PNG, or GIF images into PDF documents
-- **Word to PDF** - Transform DOC and DOCX files to PDF format
-- **PDF to Word** - Extract content from PDFs and convert to editable Word documents
+### Convert
+- Image to PDF
+- Word to PDF (LibreOffice, preserves layout)
+- PDF to Word
 
-### ✏️ Edit
-- **Extract Images** - Pull all images from your PDF files with ease
-- **Merge PDFs** - Combine multiple PDF files into one
-- **Split PDFs** - Remove or extract specific pages from PDF documents
-- **Compress PDFs** - Reduce file size without losing quality
+### Edit
+- Extract Images
+- Merge PDFs
+- Split PDFs
+- Compress PDFs
 
-### 🔐 Security & Privacy
-- ✅ **Self-hosted Processing** - Documents are processed by your own application server
-- ✅ **No Trackers** - Complete privacy, your documents stay with you
-- ✅ **No Ads** - Clean, distraction-free experience
-- ✅ **Open Source** - Transparent, auditable code
+### Security & Privacy
+- Self-hosted processing on your own server
+- No paid plans or upgrade walls
+- No trackers or ads
+- Open source
 
-## 🚀 Quick Start
+## Quick start
 
 ### Prerequisites
-- **Docker** (recommended; includes LibreOffice for accurate Word-to-PDF conversion)
-- Or **Node.js 20+**, npm, and a local LibreOffice installation
+- **Docker** (recommended; includes LibreOffice for Word-to-PDF)
+- Or Node.js 20+, npm, and a local LibreOffice install
 
-### Installation
+### Run with Docker Compose
 
-1. **Clone the repository**
 ```bash
 git clone https://github.com/Ankitmohanty2/akshar-kitaab.git
 cd akshar-kitaab
-```
-
-2. **Build and run with Docker**
-```bash
-docker build -t akshar-kitaab .
-docker run --rm -p 3000:3000 akshar-kitaab
+docker compose up -d --build
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-For development outside Docker, install LibreOffice and ensure `soffice` is on `PATH`, or set `LIBREOFFICE_PATH` to the executable:
+```bash
+docker compose logs -f web
+docker compose down
+```
+
+### Local development
 
 ```bash
 npm install
 npm run dev
 ```
+
+For Word-to-PDF outside Docker, install LibreOffice and ensure `soffice` is on `PATH`, or set `LIBREOFFICE_PATH`.
+
+## Deploy on AWS EC2
+
+See [deploy/ec2/README.md](deploy/ec2/README.md).
+
+Short version on an EC2 instance with Docker installed:
+
+```bash
+git clone https://github.com/Ankitmohanty2/akshar-kitaab.git
+cd akshar-kitaab
+docker compose up -d --build
+```
+
+Use `t3.medium` or larger for LibreOffice conversions. Prefer Nginx or an ALB in front of port `3000`.
+
+This app is not designed for Vercel serverless — Word conversion needs LibreOffice in the container.
