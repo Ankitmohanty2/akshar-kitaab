@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import styles from './Features.module.css';
+import styles from '@/styles/Features.module.css';
 
 interface Feature {
   id: string;

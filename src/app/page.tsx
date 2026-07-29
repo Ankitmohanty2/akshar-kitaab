@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import styles from './Lumina.module.css';
+import styles from '@/styles/Lumina.module.css';
 
 export default function Home() {
   return (

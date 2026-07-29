@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import styles from "./Tool.module.css";
+import styles from "@/styles/Tool.module.css";
 
 // Dynamically import the PDF preview to avoid SSR issues with canvas
 const PdfPagePreview = dynamic(() => import("@/components/PdfPagePreview"), {

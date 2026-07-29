@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
-import styles from "./PdfPagePreview.module.css";
+import styles from "@/styles/PdfPagePreview.module.css";
 
 // Set the worker source to local file in public/
 if (typeof window !== "undefined") {
