@@ -38,6 +38,8 @@ cd akshar-kitaab
 docker compose up -d --build
 ```
 
+
+
 Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
